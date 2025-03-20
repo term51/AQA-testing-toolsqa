@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 """ 
-    ?
+    @dataclass автоматически создаёт конструктор (__init__), а также методы __repr__, __eq__ и другие.
 """
 
 
