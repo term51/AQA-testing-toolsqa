@@ -1,3 +1,4 @@
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -17,6 +18,7 @@ class BasePage:
              visibility_of_element_located - Ожидание проверки того, что элемент присутствует в DOM страницы и виден.
              Видимость означает, что элемент не только отображается, но и имеет высоту и ширину больше 0.
          """
+        self.go_to_element(self.element_is_present(locator))
         return wait(self.driver, timeout or self.default_timeout, poll_frequency=self.poll_frequency).until(
             EC.visibility_of_element_located(locator)
         )
@@ -53,3 +55,20 @@ class BasePage:
     def go_to_element(self, element):
         """ JS scroll to element """
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
+
+    def action_double_click(self, element):
+        action = ActionChains(self.driver)
+        action.double_click(element)
+        action.perform()
+
+    def action_right_click(self, element):
+        action = ActionChains(self.driver)
+        action.context_click(element)
+        action.perform()
+
+    def switch_to_new_tab(self):
+        tabs = self.driver.window_handles
+        self.driver.switch_to.window(tabs[1])
+
+    def get_alert(self):
+        return self.driver.switch_to.alert

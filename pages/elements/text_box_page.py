@@ -1,5 +1,5 @@
-from generator.generator import generated_person
-from locators.text_box_page_locators import TextBoxPageLocators
+from generator.generator import generate_person
+from locators.elements.text_box_page_locators import TextBoxPageLocators
 
 from pages.base_page import BasePage
 
@@ -8,7 +8,7 @@ class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
 
     def fill_all_fields(self):
-        person_info = next(generated_person())  # next() получает один объект Person из генератора.
+        person_info = next(generate_person())  # next() получает один объект Person из генератора.
         full_name = person_info.full_name
         email = person_info.email
         current_address = person_info.current_address

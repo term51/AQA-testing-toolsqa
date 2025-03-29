@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from locators.radio_button_page_locators import RadioButtonPageLocators
+from locators.elements.radio_button_page_locators import RadioButtonPageLocators
 from pages.base_page import BasePage
 
 
