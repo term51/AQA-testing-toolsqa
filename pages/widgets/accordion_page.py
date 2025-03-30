@@ -15,8 +15,8 @@ class AccordionPage(BasePage):
         }
 
         section_title = self.element_is_visible(accordion[section]['title'])
-        is_content_shown = self.element_is_visible(accordion[section]['content']).is_displayed()
+        is_content_shown = self.element_is_present(accordion[section]['content']).is_displayed()
         if not is_content_shown:
             section_title.click()
         section_content = self.element_is_visible(accordion[section]['content']).text
-        return section_title.text, section_content
+        return section_title.text, len(section_content)

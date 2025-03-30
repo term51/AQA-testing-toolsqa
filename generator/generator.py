@@ -1,13 +1,14 @@
 import os
 import random
 
-from data.data import Person
+from data.data import Person, Date
 
 from faker import Faker
 
-from utils.files import get_temp_folder_path
+from utils.files import get_temp_folder_path, get_random_time_with_interval
 
 faker_ru = Faker('ru_RU')
+faker_en = Faker('en_US')
 
 """
     Faker.seed() фиксирует случайность для повторяемости данных. 
@@ -37,3 +38,19 @@ def generate_file():
     file.write(f'Hello {faker_ru.first_name()}')
     file.close()
     return path
+
+
+def generate_color():
+    colors = [
+        "Red", "Blue", "Green", "Yellow", "Purple", "Black", "White", "Indigo", "Magenta", "Aqua"
+    ]
+    return colors
+
+
+def generate_date():
+    yield Date(
+        year=faker_en.year(),
+        day=faker_en.day_of_month(),
+        month=faker_en.month_name(),
+        time=get_random_time_with_interval(),
+    )
