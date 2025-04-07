@@ -1,5 +1,7 @@
 from typing import Literal
 
+import allure
+
 from locators.widgets.tabs_page_locators import TabsPageLocators
 from pages.base_page import BasePage
 
@@ -7,6 +9,7 @@ from pages.base_page import BasePage
 class TabsPage(BasePage):
     locators = TabsPageLocators()
 
+    @allure.title('Check tabs {tab_name}')
     def check_tabs(self, tab_name: Literal['what', 'origin', 'use', 'more']):
         tab_locators = {
             'what': {

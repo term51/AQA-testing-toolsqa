@@ -16,7 +16,7 @@ class Widgets:
     @allure.feature('Accordion')
     class Accordion:
         @allure.title('Check accordion')
-        # сделать параметризацию
+        # TODO: сделать параметризацию
         def test_accordion(driver):
             accordion_page = AccordionPage(driver, 'https://demoqa.com/accordian')
             accordion_page.open()
@@ -51,7 +51,7 @@ class Widgets:
             assert count_values_before != count_values_after, "Values are not removed"
 
         @allure.title('Check for removal all items from the list')
-        # !! Доделать тест
+        # TODO: Доделать тест
         def test_remove_all_values_from_multi_autocomplete(driver):
             autocomplete_page = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
 
@@ -63,7 +63,7 @@ class Widgets:
             color_result = autocomplete_page.check_color_in_single()
             assert color == color_result, "Colors are not the same"
 
-    @allure.feature('DatePicker')
+    @allure.feature('Date Picker')
     class DatePicker:
         @allure.title('Check selected date')
         def test_change_date(driver):
@@ -88,7 +88,7 @@ class Widgets:
             after, before = slider_page.change_slider_value()
             assert after != before, "The value is not changed"
 
-    @allure.feature('ProgressBar')
+    @allure.feature('Progress Bar')
     class ProgressBar:
         @allure.title('Check progress bar')
         def test_progress_bar(driver):
@@ -119,7 +119,7 @@ class Widgets:
             more_result = tabs_page.check_tabs('more')
             assert more_result is False, "The more tab should be disabled"
 
-    @allure.feature('ToolTips')
+    @allure.feature('Tool Tips')
     class ToolTips:
         @allure.title('Check tooltips')
         def test_tool_tips(driver):
@@ -141,9 +141,9 @@ class Widgets:
             assert data == ['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »', 'Sub Sub Item 1',
                             'Sub Sub Item 2', 'Main Item 3'], "The menu is not correct"
 
-    @allure.feature('DropDowns')
+    @allure.feature('Drop Downs')
     class DropDowns:
-        # Сделать самостоятельно
+        # TODO: Сделать самостоятельно
         @allure.title('Check dropdowns')
         def test_select_menu(driver):
             select_menu_page = SelectMenuPage(driver, 'https://demoqa.com/select-menu')

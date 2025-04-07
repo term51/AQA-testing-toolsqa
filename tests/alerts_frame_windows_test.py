@@ -67,7 +67,7 @@ class AlertsFrameWindows:
     @allure.feature('Frames')
     class Frames:
         @allure.title('Check frames')
-        # сделать параметризацию
+        # TODO: сделать параметризацию
         def test_frames(driver):
             frames_page = FramesPage(driver, 'https://demoqa.com/frames')
             frames_page.open()

@@ -1,6 +1,5 @@
-
 from typing import Literal
-
+import allure
 from selenium.webdriver.support.ui import WebDriverWait
 
 from locators.interactions.droppable_page_locators import DroppablePageLocators
@@ -10,6 +9,7 @@ from pages.base_page import BasePage
 class DroppablePage(BasePage):
     locators = DroppablePageLocators()
 
+    @allure.title('Drop simple')
     def drop_simple(self):
         self.element_is_visible(self.locators.SIMPLE_TAB).click()
         drag_me = self.element_is_visible(self.locators.SIMPLE_DRAG_ME)
@@ -17,6 +17,7 @@ class DroppablePage(BasePage):
         self.action_drag_and_drop_to_element(drag_me, drop_here)
         return drop_here.text
 
+    @allure.title('Drop accept')
     def drop_accept(self):
         self.element_is_visible(self.locators.ACCEPT_TAB).click()
         acceptable = self.element_is_visible(self.locators.ACCEPTABLE)
@@ -30,6 +31,7 @@ class DroppablePage(BasePage):
         drop_text_acceptable = drop_here.text
         return drop_text_not_acceptable, drop_text_acceptable
 
+    @allure.title('Drop prevent propagation')
     def drop_prevent_propagation(self):
         self.element_is_visible(self.locators.PREVENT_TAB).click()
 
@@ -47,6 +49,7 @@ class DroppablePage(BasePage):
 
         return text_not_greedy_box, text_not_greedy_box_inner, text_greedy_box, text_greedy_box_inner
 
+    @allure.title('Drop revert draggable')
     def drop_revert_draggable(self, revert_box_name: Literal['will', 'not_will']):
         box_locators = {
             'will': self.locators.WILL_REVERT,

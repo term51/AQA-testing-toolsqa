@@ -1,5 +1,7 @@
 from typing import Literal
 
+import allure
+
 from locators.widgets.accordion_page_locators import AccordionPageLocators
 from pages.base_page import BasePage
 
@@ -7,6 +9,7 @@ from pages.base_page import BasePage
 class AccordionPage(BasePage):
     locators = AccordionPageLocators()
 
+    @allure.title('Check accordion {section}')
     def check_accordion(self, section: Literal['first', 'second', 'third']):
         accordion = {
             'first': {'title': self.locators.FIRST_SECTION, 'content': self.locators.FIRST_SECTION_CONTENT},

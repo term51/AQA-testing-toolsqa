@@ -12,7 +12,7 @@ class Interactions:
     @allure.feature('Sortable')
     class Sortable:
         @allure.title('Sort list and grid')
-        # сделать параметризацию
+        # TODO: сделать параметризацию
         def test_sortable(driver):
             sortable_page = SortablePage(driver, 'https://demoqa.com/sortable')
             sortable_page.open()
@@ -25,7 +25,7 @@ class Interactions:
     @allure.feature('Selectable')
     class Selectable:
         @allure.title('Select list and grid')
-        # сделать параметризацию
+        # TODO: сделать параметризацию
         def test_selectable(driver):
             selectable_page = SelectablePage(driver, 'https://demoqa.com/selectable')
             selectable_page.open()
@@ -37,7 +37,7 @@ class Interactions:
     @allure.feature('Resizable')
     class Resizable:
         @allure.title('Check resize of two blocks')
-        # сделать параметризацию
+        # TODO: сделать параметризацию
         def test_resizable(driver):
             resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
             resizable_page.open()
@@ -86,7 +86,7 @@ class Interactions:
             assert text_greedy_box_inner == 'Dropped!', "The element has not been changed."
 
         @allure.title('Check drag and drop for revert and not revert blocks')
-        # сделать параметризацию
+        # TODO: сделать параметризацию
         def test_revert_draggable_droppable(driver):
             droppable_page = DroppablePage(driver, 'https://demoqa.com/droppable')
             droppable_page.open()
@@ -124,7 +124,7 @@ class Interactions:
                    and before_only_y_position['y'] != after_only_y_position['y'], \
                 "The only element's y position should change."
 
-        # !! доделать тесты
+        # TODO: доделать тесты
         @allure.title('Check drag for container restricted blocks')
         def test_container_restricted_draggable(driver):
             draggable_page = DraggablePage(driver, 'https://demoqa.com/dragabble')

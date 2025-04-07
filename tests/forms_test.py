@@ -1,15 +1,17 @@
 import time
 
 import allure
+import pytest
 
 from pages.forms.form_page import FormPage
 
 
-# !! доделать форму
+# TODO: доделать форму
 @allure.suite('Forms')
 class Forms:
     @allure.feature('Registration Form')
     class RegistrationForm:
+        @pytest.mark.skip(reason="This is not ready yet")
         @allure.title('Fill form')
         def test_form(driver):
             form_page = FormPage(driver, 'https://demoqa.com/automation-practice-form')

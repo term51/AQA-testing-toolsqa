@@ -1,6 +1,8 @@
 import random
 from typing import Literal
 
+import allure
+
 from locators.interactions.selectable_page_locators import SelectablePageLocators
 from pages.base_page import BasePage
 
@@ -8,12 +10,14 @@ from pages.base_page import BasePage
 class SelectablePage(BasePage):
     locators = SelectablePageLocators()
 
+    @allure.title('Click random selectable item')
     def click_selectable_item(self, locator):
         item_list = self.elements_are_visible(locator)
         random_items = random.sample(item_list, k=random.randint(1, len(item_list)))
         for item in random_items:
             item.click()
 
+    @allure.title('Select items')
     def select_items(self, tab_name: Literal['list', 'grid']):
         selectable = {
             'list': {
