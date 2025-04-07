@@ -1,4 +1,5 @@
 import random
+import allure
 
 from locators.elements.check_box_page_locators import CheckBoxPageLocators
 from pages.base_page import BasePage
@@ -7,9 +8,11 @@ from pages.base_page import BasePage
 class CheckBoxPage(BasePage):
     locators = CheckBoxPageLocators()
 
+    @allure.step('Open full list of checkboxes')
     def open_full_list(self):
         self.element_is_visible(self.locators.EXPAND_ALL_BUTTON).click()
 
+    @allure.step('Click random checkbox')
     def click_random_checkbox(self):
         item_list = self.elements_are_visible(self.locators.ITEM_LIST)
         count = 21
@@ -22,6 +25,7 @@ class CheckBoxPage(BasePage):
             else:
                 break
 
+    @allure.step('Get checked checkboxes')
     def get_checked_checkboxes(self):
         checked_list = self.elements_are_present(self.locators.CHECKED_ITEMS)
         data = []
@@ -31,6 +35,7 @@ class CheckBoxPage(BasePage):
             data.append(title_item.text)
         return str(data).replace(' ', '').replace('.doc', '').lower()
 
+    @allure.step('Get output result')
     def get_output_result(self):
         result_list = self.elements_are_present(self.locators.OUTPUT_RESULT)
         data = []

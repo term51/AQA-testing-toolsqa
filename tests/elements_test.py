@@ -1,6 +1,5 @@
 import os
 import random
-
 import allure
 import pytest
 
@@ -127,20 +126,40 @@ class TestElements:
 
     @allure.feature('Links')
     class TestLinks:
-        @allure.title('Check simple link')
-        # сделать остальные линки и подумать над логикой текущих(через try except и тд)
+        @allure.title('Check "Simple" link')
         def test_link(self, driver):
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
             href_link, current_url = links_page.check_new_tab_simple_link()
-            assert href_link == current_url, "The link is broken or ulr in incorrect"
+            assert href_link == current_url, f"Expected URL '{href_link}', but got '{current_url}'"
 
-        @allure.title('Check broken link')
-        def test_broken_link(self, driver):
+        @allure.title('Check "No Content" link')
+        def test_no_content_link(self, driver):
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
-            response_code = links_page.check_broken_link('https://demoqa.com/bad-request')
-            assert response_code == 400, "The link ....."
+            response_code = links_page.check_status_code_of_link('https://demoqa.com/no-content')
+            assert response_code == 204, f"Expected 204 status code, got '{response_code}'"
+
+        @allure.title('Check "Moved" link')
+        def test_moved_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            response_code = links_page.check_status_code_of_link('https://demoqa.com/moved')
+            assert response_code == 301, f"Expected 301 status code, got '{response_code}'"
+
+        @allure.title('Check "Bad Request" link')
+        def test_bad_request_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            response_code = links_page.check_status_code_of_link('https://demoqa.com/bad-request')
+            assert response_code == 400, f"Expected 400 error code, got '{response_code}'"
+
+        @allure.title('Check "Unauthorized" link')
+        def test_unauthorized_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            response_code = links_page.check_status_code_of_link('https://demoqa.com/unauthorized')
+            assert response_code == 401, f"Expected 401 status code, got '{response_code}'"
 
     @allure.feature('Upload and Download')
     class TestUploadDownload:

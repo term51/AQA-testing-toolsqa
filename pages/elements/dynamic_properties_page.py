@@ -1,5 +1,5 @@
 import time
-
+import allure
 from selenium.common import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -10,6 +10,7 @@ from pages.base_page import BasePage
 class DynamicProperties(BasePage):
     locators = DynamicPropertiesLocators()
 
+    @allure.step('Click on enable after button')
     def check_enable_button(self):
         try:
             self.element_is_clickable(self.locators.ENABLE_BUTTON)
@@ -17,6 +18,7 @@ class DynamicProperties(BasePage):
             return False
         return True
 
+    @allure.step('Click on color change button')
     def check_changed_color(self):
         start_time = time.time()
         color_button = self.element_is_present(self.locators.COLOR_CHANGE_BUTTON)
@@ -30,6 +32,7 @@ class DynamicProperties(BasePage):
         time_taken = round(end_time - start_time, 2)
         return color_before, color_after, time_taken
 
+    @allure.step('Click on appear button')
     def check_appear_button(self):
         try:
             self.element_is_visible(self.locators.VISIBLE_AFTER_BUTTON)
