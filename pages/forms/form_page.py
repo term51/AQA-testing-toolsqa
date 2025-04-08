@@ -1,8 +1,9 @@
 import os
+import random
 import allure
 from selenium.webdriver import Keys
 
-from generator.generator import generate_person, generate_file
+from generator.generator import generate_person, generate_file, generate_subject
 from locators.forms.form_page_locators import FormPageLocators
 from pages.base_page import BasePage
 
@@ -10,7 +11,6 @@ from pages.base_page import BasePage
 class FormPage(BasePage):
     locators = FormPageLocators()
 
-    # TODO: сделать нормальную проверку всех полей
     @allure.title('Fill form fields')
     def fill_form_fields(self):
         with allure.step('Generate person data'):
@@ -21,13 +21,20 @@ class FormPage(BasePage):
 
         with allure.step('Fill form fields'):
             self.element_is_visible(self.locators.FIRST_NAME_INPUT).send_keys(person.first_name)
+
             self.element_is_visible(self.locators.LAST_NAME_INPUT).send_keys(person.last_name)
+
             self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(person.email)
+
             self.element_is_visible(self.locators.GENDER_RADIO_BUTTONS).click()
+
             self.element_is_visible(self.locators.MOBILE_NUMBER_INPUT).send_keys(person.mobile)
-            # TODO: сделать список из bundle файла на серваке и брать рандомно предмет
-            self.element_is_visible(self.locators.SUBJECTS_FIELD).send_keys('Math')
-            self.element_is_visible(self.locators.SUBJECTS_FIELD).send_keys(Keys.RETURN)
+
+            subjects = random.sample(generate_subject(), random.randint(1, 4))
+            subjects_field = self.element_is_clickable(self.locators.SUBJECTS_FIELD)
+            for subject in subjects:
+                subjects_field.send_keys(subject)
+                subjects_field.send_keys(Keys.RETURN)
 
             self.element_is_visible(self.locators.HOBBIES_INPUT).click()
 
@@ -40,11 +47,12 @@ class FormPage(BasePage):
 
             self.element_is_visible(self.locators.CITY_SELECT).click()
             self.element_is_visible(self.locators.CITY_INPUT).send_keys(Keys.RETURN)
+
             self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
 
-        # TODO: Сделать проверку на как в elements
-        with allure.step('Fill form fields'):
-            os.remove(file_path)
+        if file_path and os.path.exists(file_path):
+            with allure.step('Remove file'):
+                os.remove(file_path)
 
         return [person.first_name, person.last_name, person.email, person.mobile, person.current_address]
 

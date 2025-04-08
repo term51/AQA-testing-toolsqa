@@ -10,8 +10,6 @@ class ResizablePage(BasePage):
     @allure.title('Change size of element: {handle_locator}')
     def change_size(self, handle_locator, x, y):
         element = self.element_is_present(handle_locator)
-        # self.driver.execute_script("arguments[0].scrollIntoView();", element)
-        # time.sleep(1)
         self.action_drag_and_drop_by_offset(
             element,
             x,

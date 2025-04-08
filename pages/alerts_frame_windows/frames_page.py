@@ -7,7 +7,6 @@ from pages.base_page import BasePage
 class FramesPage(BasePage):
     locators = FramesPageLocators()
 
-    # TODO: универсальность добавить
     @allure.title('Check frame {frame_id}')
     def check_frame(self, frame_id: str):
         frame_element = None

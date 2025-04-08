@@ -54,3 +54,11 @@ def generate_date():
         month=faker_en.month_name(),
         time=get_random_time_with_interval(),
     )
+
+
+def generate_subject():
+    subjects = [
+        'Hindi', 'English', 'Maths', 'Physics', 'Chemistry', 'Biology', 'Computer Science', 'Commerce', 'Accounting',
+        'Economics', 'Arts', 'Social Studies', 'History', 'Civics'
+    ]
+    return subjects

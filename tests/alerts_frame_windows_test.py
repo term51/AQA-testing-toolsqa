@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from pages.alerts_frame_windows.alerts_page import AlertsPage
 from pages.alerts_frame_windows.frames_page import FramesPage
@@ -8,35 +9,35 @@ from pages.alerts_frame_windows.windows_page import WindowsPage
 
 
 @allure.suite('Alerts Frame Windows')
-class AlertsFrameWindows:
+class TestAlertsFrameWindows:
     @allure.feature('Browser windows')
-    class BrowserWindows:
+    class TestBrowserWindows:
 
         @allure.title('Check new tab')
-        def test_new_tab(driver):
+        def test_new_tab(self, driver):
             windows_page = WindowsPage(driver, 'https://demoqa.com/browser-windows')
             windows_page.open()
             new_tab_text = windows_page.check_opened_new_tab()
             assert new_tab_text == "This is a sample page", "The new tab wasn't opened"
 
         @allure.title('Check new window')
-        def test_new_window(driver):
+        def test_new_window(self, driver):
             windows_page = WindowsPage(driver, 'https://demoqa.com/browser-windows')
             windows_page.open()
             new_window_text = windows_page.check_opened_new_window()
             assert new_window_text == "This is a sample page", "The new window wasn't opened"
 
     @allure.feature('Alerts')
-    class Alerts:
+    class TestAlerts:
         @allure.title('Check new window')
-        def test_appear_alert(driver):
+        def test_appear_alert(self, driver):
             alerts_page = AlertsPage(driver, 'https://demoqa.com/alerts')
             alerts_page.open()
             alert_text = alerts_page.check_alert()
             assert alert_text == "You clicked a button", "The alert wasn't opened"
 
         @allure.title('Check simple alert')
-        def test_appear_alert_after_5_seconds(driver):
+        def test_appear_alert_after_5_seconds(self, driver):
             alerts_page = AlertsPage(driver, 'https://demoqa.com/alerts')
             alerts_page.open()
             alert_text, time_taken = alerts_page.check_after_alert()
@@ -44,7 +45,7 @@ class AlertsFrameWindows:
             assert time_taken == 5, "The alert wasn't opened for 5 seconds"
 
         @allure.title('Check confirm alert')
-        def test_confirm_alert(driver):
+        def test_confirm_alert(self, driver):
             alerts_page = AlertsPage(driver, 'https://demoqa.com/alerts')
             alerts_page.open()
             alerts_page.check_confirm_alert("accept")
@@ -56,30 +57,31 @@ class AlertsFrameWindows:
             assert resul_text == "You selected Cancel", "Cancel is not selected"
 
         @allure.title('Check prompt alert')
-        def test_prompt_alert(driver):
+        def test_prompt_alert(self, driver):
             alerts_page = AlertsPage(driver, 'https://demoqa.com/alerts')
             alerts_page.open()
             text = 'some text'
             alerts_page.check_prompt_alert(text)
             resul_text = alerts_page.get_prompt_alert_result()
-            assert resul_text == text, "Text not sent"
+            assert text in resul_text, "Text not sent"
 
     @allure.feature('Frames')
-    class Frames:
-        @allure.title('Check frames')
-        # TODO: сделать параметризацию
-        def test_frames(driver):
+    class TestFrames:
+        @pytest.mark.parametrize('frame_name, expected_result_frame', [
+            ('frame1', ['This is a sample page', '500px', '350px']),
+            ('frame2', ['This is a sample page', '100px', '100px'])
+        ])
+        @allure.title('Check frame {frame_name}')
+        def test_frames(self, driver, frame_name, expected_result_frame):
             frames_page = FramesPage(driver, 'https://demoqa.com/frames')
             frames_page.open()
-            result_frame1 = frames_page.check_frame('frame1')
-            result_frame2 = frames_page.check_frame('frame2')
-            assert result_frame1 == ['This is a sample page', '500px', '350px'], "Frame1 is not equal"
-            assert result_frame2 == ['This is a sample page', '100px', '100px'], "Frame2 is not equal"
+            result_frame = frames_page.check_frame(frame_name)
+            assert result_frame == expected_result_frame, f"Frame {frame_name} is not correct"
 
     @allure.feature('Nested frames')
-    class NestedFrames:
+    class TestNestedFrames:
         @allure.title('Check nested frames')
-        def test_nested_frames(driver):
+        def test_nested_frames(self, driver):
             nested_frames_page = NestedFramesPage(driver, 'https://demoqa.com/nestedframes')
             nested_frames_page.open()
             parent_text, child_text = nested_frames_page.check_nested_frames()
@@ -87,9 +89,9 @@ class AlertsFrameWindows:
             assert child_text == 'Child Iframe', "Child Iframe does not exist"
 
     @allure.feature('Modals')
-    class Modals:
+    class TestModals:
         @allure.title('Check open modals')
-        def test_modals(driver):
+        def test_modals(self, driver):
             modals_page = ModalsPage(driver, 'https://demoqa.com/modal-dialogs')
             modals_page.open()
             small, large = modals_page.check_modal_dialogs()

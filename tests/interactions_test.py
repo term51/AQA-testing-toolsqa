@@ -1,4 +1,7 @@
+from typing import Literal
+
 import allure
+import pytest
 
 from pages.interactions.draggable_page import DraggablePage
 from pages.interactions.droppable_page import DroppablePage
@@ -8,36 +11,30 @@ from pages.interactions.sortable_page import SortablePage
 
 
 @allure.suite('Interactions')
-class Interactions:
+class TestInteractions:
     @allure.feature('Sortable')
-    class Sortable:
-        @allure.title('Sort list and grid')
-        # TODO: сделать параметризацию
-        def test_sortable(driver):
+    class TestSortable:
+        @pytest.mark.parametrize('tab', ['list', 'grid'])
+        @allure.title('Sort {tab}')
+        def test_sortable(self, driver, tab: Literal['list', 'grid']):
             sortable_page = SortablePage(driver, 'https://demoqa.com/sortable')
             sortable_page.open()
-            before, after = sortable_page.change_list_order()
-            assert before != after, "The order of LIST is not changed"
-
-            before, after = sortable_page.change_grid_order()
-            assert before != after, "The order of GRID is not changed"
+            before, after = sortable_page.change_order(tab)
+            assert before != after, f"The order of {tab} is not changed"
 
     @allure.feature('Selectable')
-    class Selectable:
-        @allure.title('Select list and grid')
-        # TODO: сделать параметризацию
-        def test_selectable(driver):
+    class TestSelectable:
+        @pytest.mark.parametrize('tab', ['list', 'grid'])
+        @allure.title('Select {tab}')
+        def test_selectable(self, driver, tab: Literal['list', 'grid']):
             selectable_page = SelectablePage(driver, 'https://demoqa.com/selectable')
             selectable_page.open()
-            items_list = selectable_page.select_items('list')
-            items_grid = selectable_page.select_items('grid')
-            assert len(items_list) > 0, "There are no selected items in LIST"
-            assert len(items_grid) > 0, "There are no selected items in GRID"
+            items = selectable_page.select_items(tab)
+            assert len(items) > 0, f"There are no selected items in {tab}"
 
     @allure.feature('Resizable')
     class Resizable:
         @allure.title('Check resize of two blocks')
-        # TODO: сделать параметризацию
         def test_resizable(driver):
             resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
             resizable_page.open()
@@ -58,16 +55,16 @@ class Interactions:
             assert size_after['height'] == 20, "The min height of the box must be 20"
 
     @allure.feature('Droppable')
-    class Droppable:
+    class TestDroppable:
         @allure.title('Check simple drag and drop')
-        def test_simple_droppable(driver):
+        def test_simple_droppable(self, driver):
             droppable_page = DroppablePage(driver, 'https://demoqa.com/droppable')
             droppable_page.open()
             result_text = droppable_page.drop_simple()
             assert result_text == 'Dropped!', "The element was not dropped"
 
         @allure.title('Check drag and drop for acceptable property of blocks')
-        def test_accept_droppable(driver):
+        def test_accept_droppable(self, driver):
             droppable_page = DroppablePage(driver, 'https://demoqa.com/droppable')
             droppable_page.open()
             text_not_acceptable, text_acceptable = droppable_page.drop_accept()
@@ -75,7 +72,7 @@ class Interactions:
             assert text_acceptable == 'Dropped!', "The element was not dropped."
 
         @allure.title('Check drag and drop for Prevent Propagation of blocks')
-        def test_prevent_propagation_droppable(driver):
+        def test_prevent_propagation_droppable(self, driver):
             droppable_page = DroppablePage(driver, 'https://demoqa.com/droppable')
             droppable_page.open()
             text_not_greedy_box, text_not_greedy_box_inner, text_greedy_box, text_greedy_box_inner = \
@@ -86,8 +83,7 @@ class Interactions:
             assert text_greedy_box_inner == 'Dropped!', "The element has not been changed."
 
         @allure.title('Check drag and drop for revert and not revert blocks')
-        # TODO: сделать параметризацию
-        def test_revert_draggable_droppable(driver):
+        def test_revert_draggable_droppable(self, driver):
             droppable_page = DroppablePage(driver, 'https://demoqa.com/droppable')
             droppable_page.open()
             before_position, after_position = droppable_page.drop_revert_draggable('will')
@@ -101,16 +97,16 @@ class Interactions:
                    and before_position['y'] == after_position['y'], "The element's position should not change."
 
     @allure.feature('Draggable')
-    class Draggable:
+    class TestDraggable:
         @allure.title('Check simple dragging')
-        def test_simple_draggable(driver):
+        def test_simple_draggable(self, driver):
             draggable_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
             draggable_page.open()
             before_position, after_position = draggable_page.simple_drag_box()
             assert before_position != after_position, "The element's position should change."
 
         @allure.title('Check drag only on X and only on Y axes')
-        def test_axis_restricted_draggable(driver):
+        def test_axis_restricted_draggable(self, driver):
             draggable_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
             draggable_page.open()
             before_only_x_position, before_only_y_position, after_only_x_position, after_only_y_position = \
@@ -123,9 +119,3 @@ class Interactions:
             assert before_only_y_position['x'] == after_only_y_position['x'] \
                    and before_only_y_position['y'] != after_only_y_position['y'], \
                 "The only element's y position should change."
-
-        # TODO: доделать тесты
-        @allure.title('Check drag for container restricted blocks')
-        def test_container_restricted_draggable(driver):
-            draggable_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
-            draggable_page.open()

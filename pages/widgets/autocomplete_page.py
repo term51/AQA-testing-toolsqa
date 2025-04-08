@@ -1,6 +1,8 @@
 import random
+import time
 
 import allure
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Keys
 
 from generator.generator import generate_color
@@ -13,7 +15,7 @@ class AutoCompletePage(BasePage):
 
     @allure.title('Fill multi input ')
     def fill_input_multi(self):
-        colors = random.sample(generate_color(), random.randint(1, 4))
+        colors = random.sample(generate_color(), random.randint(3, 5))
         input_multi = self.element_is_clickable(self.locators.MULTI_INPUT)
         for color in colors:
             input_multi.send_keys(color)
@@ -30,11 +32,22 @@ class AutoCompletePage(BasePage):
         count_values_after = len(self.elements_are_visible(self.locators.MULTI_VALUES))
         return count_values_before, count_values_after
 
+    @allure.title('Remove all values from multi input')
+    def remove_all_values_from_multi(self):
+        remove_all_button = self.element_is_visible(self.locators.MULTI_REMOVE_ALL_BUTTONS)
+        remove_all_button.click()
+        try:
+            count_values = len(self.elements_are_visible(self.locators.MULTI_VALUES))
+            return count_values
+        except TimeoutException:
+            return 0
+
     @allure.title('Check color in multi input')
     def check_color_in_multi(self):
         color_list = self.elements_are_present(self.locators.MULTI_VALUES)
         colors = []
         for color in color_list:
+            time.sleep(1)
             colors.append(color.text)
         return colors
 

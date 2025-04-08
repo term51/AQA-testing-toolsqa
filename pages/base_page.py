@@ -18,7 +18,6 @@ class BasePage:
     @allure.step("Wait for element to be visible: {locator}")
     def element_is_visible(self, locator, timeout=None):
         self.go_to_element(self.element_is_present(locator))
-        # with allure.step(f"Wait for element to be visible: {locator}"):
         return wait(self.driver, timeout or self.default_timeout, poll_frequency=self.poll_frequency).until(
             EC.visibility_of_element_located(locator)
         )

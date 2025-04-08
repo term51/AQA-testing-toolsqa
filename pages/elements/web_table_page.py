@@ -61,7 +61,6 @@ class WebTablePage(BasePage):
         row = delete_button.find_element(*self.locators.ROW_PARENT)
         return row.text.splitlines()
 
-    # TODO: сделать рандомно выбор значения и его изменение
     @allure.step('Update person info')
     def update_person_info(self):
         person_info = next(generate_person())

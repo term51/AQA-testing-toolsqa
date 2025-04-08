@@ -44,7 +44,9 @@ class AlertsPage(BasePage):
         self.element_is_visible(self.locators.PROMPT_BUTTON).click()
         alert_window = self.get_alert()
         alert_window.send_keys(text)
+        alert_window.accept()
 
     @allure.title('Get prompt alert result')
     def get_prompt_alert_result(self):
-        return self.element_is_present(self.locators.PROMPT_RESULT).text
+        prompt_result = self.element_is_present(self.locators.PROMPT_RESULT)
+        return prompt_result.text

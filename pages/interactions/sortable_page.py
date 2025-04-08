@@ -1,4 +1,6 @@
 import random
+from typing import Literal
+
 import allure
 
 from locators.interactions.sortable_page_locators import SortablePageLocators
@@ -20,19 +22,21 @@ class SortablePage(BasePage):
         item_to = two_random_elements[1]
         self.action_drag_and_drop_to_element(item_from, item_to)
 
-    @allure.title('Change list order')
-    def change_list_order(self):
-        self.element_is_present(self.locators.TAB_LIST).click()
-        items_locator = self.locators.LIST_ITEMS
-        order_before = self.get_sortable_items(items_locator)
-        self.shuffle_list(items_locator)
-        order_after = self.get_sortable_items(items_locator)
-        return order_before, order_after
+    @allure.title('Change order of {tab_name}')
+    def change_order(self, tab_name: Literal['list', 'grid']):
+        tab_locators = {
+            'list': {
+                'tab': self.locators.TAB_LIST,
+                'items': self.locators.LIST_ITEMS,
+            },
+            'grid': {
+                'tab': self.locators.TAB_GRID,
+                'items': self.locators.GRID_ITEMS,
+            }
+        }
 
-    @allure.title('Change grid order')
-    def change_grid_order(self):
-        self.element_is_present(self.locators.TAB_GRID).click()
-        items_locator = self.locators.GRID_ITEMS
+        self.element_is_present(tab_locators[tab_name]['tab']).click()
+        items_locator = tab_locators[tab_name]['items']
         order_before = self.get_sortable_items(items_locator)
         self.shuffle_list(items_locator)
         order_after = self.get_sortable_items(items_locator)

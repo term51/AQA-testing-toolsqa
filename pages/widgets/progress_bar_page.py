@@ -12,17 +12,17 @@ class ProgressBarPage(BasePage):
 
     @allure.title('Change progress bar value')
     def change_progress_bar_value(self):
-        with allure.title('Get text before change progress bar value'):
+        with allure.step('Get text before change progress bar value'):
             value_before = self.element_is_present(self.locators.PROGRESS_BAR).text
 
-        with allure.title('Start progress bar'):
+        with allure.step('Start progress bar'):
             self.element_is_clickable(self.locators.START_STOP_BUTTON).click()
 
         wait_sec = random.randint(1, 3)
-        with allure.title('Wait progress bar for {wait_sec} seconds'):
+        with allure.step('Wait progress bar for {wait_sec} seconds'):
             time.sleep(wait_sec)
 
-        with allure.title('Stop progress bar'):
+        with allure.step('Stop progress bar'):
             self.element_is_clickable(self.locators.START_STOP_BUTTON).click()
 
         value_after = self.element_is_visible(self.locators.PROGRESS_BAR).text
