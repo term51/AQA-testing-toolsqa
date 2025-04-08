@@ -7,9 +7,20 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--ignore-certificate-errors')
+chrome_options.add_argument("--disable-web-security")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.set_capability("acceptInsecureCerts", True)
+
+service = Service(ChromeDriverManager().install())
+
+
 @pytest.fixture(scope='function')
 def driver():
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(options=chrome_options, service=service)
     driver.maximize_window()
     yield driver
     driver.quit()
@@ -23,7 +34,7 @@ def pytest_runtest_makereport(item, call):
 
     # Только если тест упал на этапе выполнения (call)
     if rep.when == 'call' and rep.failed:
-        # === ЛОГИ ===
+        # attach logs
         caplog = item.funcargs.get("caplog", None)
         if caplog and caplog.text:
             allure.attach(
@@ -32,7 +43,7 @@ def pytest_runtest_makereport(item, call):
                 attachment_type=allure.attachment_type.TEXT
             )
 
-        # === СКРИНШОТ ===
+        # attach screenshot
         driver = item.funcargs.get('driver', None)
         if driver:
             try:
